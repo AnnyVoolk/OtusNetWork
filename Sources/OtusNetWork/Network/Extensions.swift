@@ -6,35 +6,35 @@
 
 import Foundation
 
-public extension Bool: JSONEncodable {
+extension Bool: JSONEncodable {
+    public func encodeToJSON() -> Any { return self as Any }
+}
+
+extension Float: JSONEncodable {
     func encodeToJSON() -> Any { return self as Any }
 }
 
-public extension Float: JSONEncodable {
-    func encodeToJSON() -> Any { return self as Any }
+extension Int: JSONEncodable {
+    public func encodeToJSON() -> Any { return self as Any }
 }
 
-public extension Int: JSONEncodable {
-    func encodeToJSON() -> Any { return self as Any }
-}
-
-public extension Int32: JSONEncodable {
+extension Int32: JSONEncodable {
     func encodeToJSON() -> Any { return NSNumber(value: self as Int32) }
 }
 
-public extension Int64: JSONEncodable {
+extension Int64: JSONEncodable {
     func encodeToJSON() -> Any { return NSNumber(value: self as Int64) }
 }
 
-public extension Double: JSONEncodable {
-    func encodeToJSON() -> Any { return self as Any }
+extension Double: JSONEncodable {
+    public func encodeToJSON() -> Any { return self as Any }
 }
 
-public extension String: JSONEncodable {
-    func encodeToJSON() -> Any { return self as Any }
+extension String: JSONEncodable {
+    public func encodeToJSON() -> Any { return self as Any }
 }
 
-public extension RawRepresentable where RawValue: JSONEncodable {
+extension RawRepresentable where RawValue: JSONEncodable {
     func encodeToJSON() -> Any { return self.rawValue as Any }
 }
 
@@ -46,13 +46,13 @@ private func encodeIfPossible<T>(_ object: T) -> Any {
     }
 }
 
-public extension Array: JSONEncodable {
+extension Array: JSONEncodable {
     func encodeToJSON() -> Any {
         return self.map(encodeIfPossible)
     }
 }
 
-public extension Dictionary: JSONEncodable {
+extension Dictionary: JSONEncodable {
     func encodeToJSON() -> Any {
         var dictionary = [AnyHashable: Any]()
         for (key, value) in self {
@@ -62,31 +62,31 @@ public extension Dictionary: JSONEncodable {
     }
 }
 
-public extension Data: JSONEncodable {
+extension Data: JSONEncodable {
     func encodeToJSON() -> Any {
         return self.base64EncodedString(options: Data.Base64EncodingOptions())
     }
 }
 
-public extension Date: JSONEncodable {
+extension Date: JSONEncodable {
     func encodeToJSON() -> Any {
         return CodableHelper.dateFormatter.string(from: self) as Any
     }
 }
 
-public extension URL: JSONEncodable {
+extension URL: JSONEncodable {
     func encodeToJSON() -> Any {
         return self
     }
 }
 
-public extension UUID: JSONEncodable {
+extension UUID: JSONEncodable {
     func encodeToJSON() -> Any {
         return self.uuidString
     }
 }
 
-public extension String: CodingKey {
+extension String: CodingKey {
 
     public var stringValue: String {
         return self
@@ -106,7 +106,7 @@ public extension String: CodingKey {
 
 }
 
-public extension KeyedEncodingContainerProtocol {
+extension KeyedEncodingContainerProtocol {
 
     public mutating func encodeArray<T>(_ values: [T], forKey key: Self.Key) throws where T : Encodable {
         var arrayContainer = nestedUnkeyedContainer(forKey: key)
@@ -133,7 +133,7 @@ public extension KeyedEncodingContainerProtocol {
 
 }
 
-public extension KeyedDecodingContainerProtocol {
+extension KeyedDecodingContainerProtocol {
 
     public func decodeArray<T>(_ type: T.Type, forKey key: Self.Key) throws -> [T] where T : Decodable {
         var tmpArray = [T]()
@@ -172,7 +172,7 @@ public extension KeyedDecodingContainerProtocol {
 
 }
 
-public extension HTTPURLResponse {
+extension HTTPURLResponse {
     var isStatusCodeSuccessful: Bool {
         return Array(200 ..< 300).contains(statusCode)
     }

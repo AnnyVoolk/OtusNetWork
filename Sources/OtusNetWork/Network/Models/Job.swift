@@ -55,7 +55,7 @@ public struct Job: Codable, Identifiable {
 
 extension Job {
     
-    var trimmedDescription: String? {
+    public var trimmedDescription: String? {
         description?.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
     }
 }
